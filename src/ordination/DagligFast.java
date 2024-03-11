@@ -15,6 +15,7 @@ public class DagligFast extends Ordination{
     public Dosis[] getDoser() {
         return doser;
     }
+    //tilfældig kommentar
     public void createDosis(LocalTime tid, double antal) {
         Dosis dosis = new Dosis(tid, antal);
         for (int i = 0; i < doser.length; i++) {
