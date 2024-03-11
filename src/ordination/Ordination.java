@@ -58,4 +58,7 @@ public abstract class Ordination {
      * @return
      */
     public abstract String getType();
+    public Laegemiddel getLaegemiddel() {
+        return laegemiddel;
+    }
 }
