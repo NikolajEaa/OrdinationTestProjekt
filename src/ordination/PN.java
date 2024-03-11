@@ -36,10 +36,17 @@ public class PN extends Ordination {
     public double doegnDosis() {
         // TODO
         Collections.sort(givetDosisTidspunkt);
-
-        return antalEnheder * getAntalGangeGivet() /
-                ((int) ChronoUnit.DAYS.between(givetDosisTidspunkt.get(0),
-                        givetDosisTidspunkt.get(givetDosisTidspunkt.size() - 1)));
+        int antaldage = 0;
+        double doegnDosis = 0;
+        if (givetDosisTidspunkt.isEmpty()) {
+            doegnDosis = 0;
+        } else {
+            antaldage = ((int) ChronoUnit.DAYS.between(givetDosisTidspunkt.getFirst(),
+                    givetDosisTidspunkt.getLast()));
+            //Udregner doegndosis
+            doegnDosis = antalEnheder * getAntalGangeGivet() / antaldage;
+        }
+        return doegnDosis;
     }
 
     @Override
