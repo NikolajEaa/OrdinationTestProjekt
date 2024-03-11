@@ -12,10 +12,12 @@ public class DagligFast extends Ordination{
         super(startDen, slutDen);
     }
 
+
     public Dosis[] getDoser() {
         return doser;
     }
-    //tilfældig kommentar
+
+    //Opreter en dosis, og sætter den på første ledige plads
     public void createDosis(LocalTime tid, double antal) {
         Dosis dosis = new Dosis(tid, antal);
         for (int i = 0; i < doser.length; i++) {
