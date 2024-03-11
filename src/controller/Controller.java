@@ -5,6 +5,7 @@ import storage.Storage;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -36,8 +37,15 @@ public class Controller {
      */
     public PN opretPNOrdination(LocalDate startDen, LocalDate slutDen,
                                 Patient patient, Laegemiddel laegemiddel, double antal) {
-        // TODO
-        return null;
+        if (!checkStartFoerSlut(startDen, slutDen)) {
+            throw new IllegalArgumentException("Start dato skal være før slut dato!");
+        }
+        //Opretter ordinationen
+        PN pnOrdination = new PN(startDen, slutDen, antal);
+        pnOrdination.setLaegemiddel(laegemiddel);
+        //Gives til patienten
+        patient.addOrdination(pnOrdination);
+        return pnOrdination;
     }
 
     /**
@@ -50,8 +58,16 @@ public class Controller {
                                                 LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
                                                 double morgenAntal, double middagAntal, double aftenAntal,
                                                 double natAntal) {
-        // TODO
-        return null;
+        if (!checkStartFoerSlut(startDen, slutDen)) {
+            throw new IllegalArgumentException("Start dato skal være før slut dato!");
+        }
+        //Opretter dagligfast
+        DagligFast dagligFast = new DagligFast(startDen, slutDen);
+        dagligFast.setLaegemiddel(laegemiddel);
+        dagligFast.addDosiser(morgenAntal, middagAntal, aftenAntal, natAntal);
+        //gives til patien
+        patient.addOrdination(dagligFast);
+        return dagligFast;
     }
 
     /**
@@ -66,7 +82,7 @@ public class Controller {
                                                   LocalDate slutDen, Patient patient, Laegemiddel laegemiddel,
                                                   LocalTime[] klokkeSlet, double[] antalEnheder) {
         //Tjekker datoen
-        if (checkStartFoerSlut(startDen, slutDen)) {
+        if (!checkStartFoerSlut(startDen, slutDen)) {
             throw new IllegalArgumentException("Start dato skal være før slut dato!");
         }
 
@@ -82,6 +98,8 @@ public class Controller {
         for (int i = 0; i < klokkeSlet.length; i++) {
             dagligSkaev.opretDosis(klokkeSlet[i], antalEnheder[i]);
         }
+        //Adder til patien
+        patient.addOrdination(dagligSkaev);
         return dagligSkaev;
     }
 
@@ -92,7 +110,10 @@ public class Controller {
      * Pre: ordination og dato er ikke null
      */
     public void ordinationPNAnvendt(PN ordination, LocalDate dato) {
-        // TODO
+        if (dato.isAfter(ordination.getSlutDen()) || dato.isBefore(ordination.getStartDen())) {
+            throw new IllegalArgumentException("Dato er udenfor gyldighedsperiode");
+        }
+        ordination.givDosis(dato);
     }
 
     /**
@@ -102,8 +123,14 @@ public class Controller {
      * Pre: patient og lægemiddel er ikke null
      */
     public double anbefaletDosisPrDoegn(Patient patient, Laegemiddel laegemiddel) {
-        //TODO
-        return 0;
+        double anbefaletDosis = 0;
+        double vaegt = patient.getVaegt();
+        if (vaegt < 25) {
+            anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnLet();
+        } else if (vaegt < 120) {
+            anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnNormal();
+        } else anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnTung();
+        return anbefaletDosis;
     }
 
     /**
@@ -113,8 +140,22 @@ public class Controller {
      */
     public int antalOrdinationerPrVægtPrLægemiddel(double vægtStart,
                                                    double vægtSlut, Laegemiddel laegemiddel) {
-        // TODO
-        return 0;
+        ArrayList<Patient> patienter = (ArrayList<Patient>) getAllPatienter();
+        ArrayList<Ordination> ordinationerPrVægtPrLægemiddel = new ArrayList<>();
+
+        int antalOrdinationer = 0;
+        //Løber alle patiener igennem
+        for (Patient patient : patienter) {
+            //Hvis patientens vægt er inde for intervallet checkes ordinationerne
+            if (patient.getVaegt() >= vægtStart && patient.getVaegt() <= vægtSlut) {
+                for (Ordination ordination : patient.getOrdinationer()) {
+                    if (ordination.getLaegemiddel().equals(laegemiddel)) {
+                        antalOrdinationer++;
+                    }
+                }
+            }
+        }
+        return antalOrdinationer;
     }
 
     public List<Patient> getAllPatienter() {
