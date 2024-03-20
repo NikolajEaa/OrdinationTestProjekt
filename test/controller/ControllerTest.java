@@ -42,24 +42,26 @@ class ControllerTest {
     @Test
     void DagligFastUgyldig_TC1() {
 
-        DagligFast dagligFast;
+        DagligFast dagligFast = null;
         try {
         dagligFast = controller.opretDagligFastOrdination(LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 24), patient, laegemiddel, 0, 0, 0, 0);
         }
         catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("Daglig Fast skal have en værdi på en af den pågældende dage"));
         }
+        assertTrue(!patient.getOrdinationer().contains(dagligFast));
     }
     @Test
     void DagligFastUgyldig_TC2() {
 
-        DagligFast dagligFast;
+        DagligFast dagligFast = null;
         try {
             dagligFast = controller.opretDagligFastOrdination(LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 24), patient, laegemiddel, -1, 1, 2, 0);
         }
         catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("Ordinationerne må ikke være negative"));
         }
+        assertTrue(!patient.getOrdinationer().contains(dagligFast));
     }
 
 
