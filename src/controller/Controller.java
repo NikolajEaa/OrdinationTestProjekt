@@ -127,7 +127,7 @@ public class Controller {
         double vaegt = patient.getVaegt();
         if (vaegt < 25) {
             anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnLet();
-        } else if (vaegt < 120) {
+        } else if (vaegt <   120) {
             anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnNormal();
         } else anbefaletDosis = laegemiddel.getEnhedPrKgPrDoegnTung();
         return anbefaletDosis;
