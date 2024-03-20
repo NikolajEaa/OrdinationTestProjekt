@@ -15,6 +15,7 @@ public class DagligSkaev extends Ordination {
         super(startDen, slutDen);
         this.doser = new ArrayList<Dosis>();
     }
+
     public ArrayList<Dosis> getDoser() {
         return doser;
     }
@@ -27,7 +28,7 @@ public class DagligSkaev extends Ordination {
     @Override
     public double samletDosis() {
         //Starter med at finde antal dage i forløbet
-        int numberOfDays = (int) ChronoUnit.DAYS.between(getStartDen(),getSlutDen()) + 1;
+        int numberOfDays = (int) ChronoUnit.DAYS.between(getStartDen(), getSlutDen()) + 1;
         double antalDagligDoser = doegnDosis();
         //Udregner samlet dosis
         double samletDosis = numberOfDays * antalDagligDoser;
@@ -42,6 +43,8 @@ public class DagligSkaev extends Ordination {
         }
         return antalDagligDoser;
     }
+
+
 
     @Override
     public String getType() {
