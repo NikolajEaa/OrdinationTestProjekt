@@ -1,13 +1,11 @@
 package controller;
 
-import ordination.DagligFast;
-import ordination.Dosis;
-import ordination.Laegemiddel;
-import ordination.Patient;
+import ordination.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,7 +18,7 @@ class ControllerTest {
     void setUp() {
         patient = new Patient("123456-7890", "Fornavn Efternavn", 78);
         laegemiddel = new Laegemiddel("Acetylsalicylsyre", 0.1, 0.2, 0.5, "Styk");
-
+    }
 
     @Test
     void opretPNOrdination() {
@@ -65,10 +63,6 @@ class ControllerTest {
             assertTrue(e.getMessage().contains("Ordinationerne må ikke være negative"));
         }
         assertTrue(!patient.getOrdinationer().contains(dagligFast));
-    }
-
-
-    void opretDagligFastOrdination() {
     }
 
     @Test
