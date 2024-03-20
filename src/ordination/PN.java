@@ -34,17 +34,16 @@ public class PN extends Ordination {
     }
 
     public double doegnDosis() {
-        // TODO
         Collections.sort(givetDosisTidspunkt);
-        int antaldage = 0;
+        int antaldage = 1;
         double doegnDosis = 0;
         if (givetDosisTidspunkt.isEmpty()) {
             doegnDosis = 0;
         } else {
-            antaldage = ((int) ChronoUnit.DAYS.between(givetDosisTidspunkt.getFirst(),
+            antaldage += ((int) ChronoUnit.DAYS.between(givetDosisTidspunkt.getFirst(),
                     givetDosisTidspunkt.getLast()));
             //Udregner doegndosis
-            doegnDosis = antalEnheder * getAntalGangeGivet() / antaldage;
+            doegnDosis = antalEnheder * getAntalGangeGivet() / (double)antaldage;
         }
         return doegnDosis;
     }
@@ -66,7 +65,6 @@ public class PN extends Ordination {
      * @return
      */
     public int getAntalGangeGivet() {
-        // TODO
         return givetDosisTidspunkt.size();
     }
 
@@ -74,4 +72,7 @@ public class PN extends Ordination {
         return antalEnheder;
     }
 
+    public ArrayList<LocalDate> getGivetDosisTidspunkt() {
+        return new ArrayList<LocalDate>(givetDosisTidspunkt);
+    }
 }
