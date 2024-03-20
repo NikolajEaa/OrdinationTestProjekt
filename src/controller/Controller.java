@@ -61,6 +61,14 @@ public class Controller {
         if (!checkStartFoerSlut(startDen, slutDen)) {
             throw new IllegalArgumentException("Start dato skal være før slut dato!");
         }
+        if (morgenAntal < 0 || middagAntal < 0 || aftenAntal < 0 || natAntal < 0) {
+            throw new IllegalArgumentException("Ordinationerne må ikke være negative");
+        }
+        double sum = morgenAntal + middagAntal + aftenAntal + natAntal;
+
+        if (sum == 0) {
+            throw new IllegalArgumentException("Daglig Fast skal have en værdi på en af den pågældende dage");
+        }
         //Opretter dagligfast
         DagligFast dagligFast = new DagligFast(startDen, slutDen);
         dagligFast.setLaegemiddel(laegemiddel);

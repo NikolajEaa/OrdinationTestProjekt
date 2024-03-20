@@ -21,18 +21,20 @@ public class DagligFast extends Ordination {
     public void addDosiser(double antal, double antal2, double antal3, double antal4) {
         Dosis morgenDosis = new Dosis(LocalTime.of(9,0,0), antal);
         doser[0] = morgenDosis;
-        Dosis middagDosis = new Dosis(LocalTime.of(12,0,0), antal);
+        Dosis middagDosis = new Dosis(LocalTime.of(12,0,0), antal2);
         doser[1] = middagDosis;
-        Dosis aftenDosis = new Dosis(LocalTime.of(18,0,0), antal);
+        Dosis aftenDosis = new Dosis(LocalTime.of(18,0,0), antal3);
         doser[2] = aftenDosis;
-        Dosis natDosis = new Dosis(LocalTime.of(23,59,59), antal);
+        Dosis natDosis = new Dosis(LocalTime.of(23,59,59), antal4);
         doser[3] = natDosis;
     }
 
     @Override
     public double samletDosis() {
         long antalDage = ChronoUnit.DAYS.between(getStartDen(), getSlutDen());
-        return antalDage * doegnDosis();
+
+
+        return (antalDage + 1) * doegnDosis();
     }
 
     @Override
