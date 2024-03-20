@@ -27,7 +27,7 @@ public class DagligSkaev extends Ordination {
     @Override
     public double samletDosis() {
         //Starter med at finde antal dage i forløbet
-        int numberOfDays = (int) ChronoUnit.DAYS.between(getStartDen(),getSlutDen());
+        int numberOfDays = (int) ChronoUnit.DAYS.between(getStartDen(),getSlutDen()) + 1;
         double antalDagligDoser = doegnDosis();
         //Udregner samlet dosis
         double samletDosis = numberOfDays * antalDagligDoser;
