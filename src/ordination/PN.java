@@ -43,7 +43,7 @@ public class PN extends Ordination {
             antaldage += ((int) ChronoUnit.DAYS.between(givetDosisTidspunkt.getFirst(),
                     givetDosisTidspunkt.getLast()));
             //Udregner doegndosis
-            doegnDosis = antalEnheder * getAntalGangeGivet() / antaldage;
+            doegnDosis = antalEnheder * getAntalGangeGivet() / (double)antaldage;
         }
         return doegnDosis;
     }
@@ -72,4 +72,7 @@ public class PN extends Ordination {
         return antalEnheder;
     }
 
+    public ArrayList<LocalDate> getGivetDosisTidspunkt() {
+        return new ArrayList<LocalDate>(givetDosisTidspunkt);
+    }
 }
