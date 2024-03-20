@@ -45,8 +45,34 @@ class ControllerTest {
         Controller controller = Controller.getController();
         Patient patient = controller.opretPatient("12", "Bent", 78);
         Laegemiddel laegemiddel = controller.opretLaegemiddel("Acetylsalicylsyre", 0.1, 0.2, 0.5, "Styk");
-        PN pn = controller.opretPNOrdination(LocalDate.of(2024, 12, 24), LocalDate.of(2024, 12, 22), patient, laegemiddel, 2);
+        try {
+            PN pn = controller.opretPNOrdination(LocalDate.of(2024, 12, 24), LocalDate.of(2024, 12, 22), patient, laegemiddel, 2);
+        } catch (IllegalArgumentException e){
+            assertTrue(e.getMessage().contains("Start dato skal være før slut dato!"));
 
+        }
+    }
+    @Test
+    void opretPNOrdinationNegativAntal() {
+        Controller controller = Controller.getController();
+        Patient patient = controller.opretPatient("12", "Bent", 78);
+        Laegemiddel laegemiddel = controller.opretLaegemiddel("Acetylsalicylsyre", 0.1, 0.2, 0.5, "Styk");
+        try {
+            PN pn = controller.opretPNOrdination(LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 24), patient, laegemiddel, -2);
+        } catch (IllegalArgumentException e){
+            assertTrue(e.getMessage().contains("Antal skal være positiv"));
+        }
+    }
+    @Test
+    void opretPNOrdinationNulAntal() {
+        Controller controller = Controller.getController();
+        Patient patient = controller.opretPatient("12", "Bent", 78);
+        Laegemiddel laegemiddel = controller.opretLaegemiddel("Acetylsalicylsyre", 0.1, 0.2, 0.5, "Styk");
+        try {
+            PN pn = controller.opretPNOrdination(LocalDate.of(2024, 12, 12), LocalDate.of(2024, 12, 24), patient, laegemiddel, 0);
+        } catch (IllegalArgumentException e){
+            assertTrue(e.getMessage().contains("Antal skal være positiv"));
+        }
     }
 
     @BeforeEach
